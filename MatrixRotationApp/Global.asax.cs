@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Autofac;
+using Autofac.Integration.Mvc;
+using MatrixRotationApp.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,6 +16,20 @@ namespace MatrixRotationApp
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            var builder = new ContainerBuilder();
+
+            builder.RegisterControllers(typeof(MvcApplication).Assembly);
+            builder.RegisterModelBinders(typeof(MvcApplication).Assembly);
+            builder.RegisterModelBinderProvider();
+            builder.RegisterModule<AutofacWebTypesModule>();
+            builder.RegisterSource(new ViewRegistrationSource());
+            builder.RegisterFilterProvider();
+
+            builder.RegisterType<MatrixService>().As<IMatrixService>();
+
+            var container = builder.Build();
+            DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
         }
     }
 }

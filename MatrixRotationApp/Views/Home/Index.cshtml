@@ -1,0 +1,59 @@
+﻿@model MatrixRotationApp.Models.HomeViewModel
+
+@{
+    ViewBag.Title = "Приложение для поворота квадратной матрицы";
+}
+
+<div>
+    <h1>@ViewBag.Title</h1>
+    @if (Model.Error != null)
+    {
+    <div class="error">
+        @Model.Error
+    </div>
+    }
+    <div class="upload-form">
+        <h2>Загрузите матрицу</h2>
+        @using (Html.BeginForm("UploadMatrix",
+                    "Home",
+                    FormMethod.Post,
+                    new { enctype = "multipart/form-data" }))
+        {
+            <label for="file">Загрузить (.csv):</label>
+            <br>
+            <input type="file" accept=".csv" name="file" id="uploadFile" />
+            <br>
+            <br>
+            <button id="uploadButton" class="upload-button">Загрузить</button>
+            <br>
+            <br>
+            @ViewBag.Message
+        }
+    </div>
+    @if (Model.Matrix != null)
+    {
+    <div class="actions">
+        @using (Html.BeginForm("Actions", "Home", FormMethod.Post))
+        {
+            <button name="action" value="RotateСlockwise">Повернуть на 90°</button>
+        }
+    </div>
+    <div class="matrix-container">
+        <div class="matrix">
+            <table>
+                @for (int i = 0; i < Model.Matrix.Length; i++)
+                {
+                <tr>
+                    @for (int j = 0; j < Model.Matrix[i].Length; j++)
+                    {
+                    <td>
+                        @Model.Matrix[i][j]
+                    </td>
+                    }
+                </tr>
+                }
+            </table>
+        </div>
+    </div>
+    }
+</div>
