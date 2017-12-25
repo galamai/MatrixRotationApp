@@ -3,6 +3,7 @@ using Autofac.Integration.Mvc;
 using MatrixRotationApp.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -30,6 +31,8 @@ namespace MatrixRotationApp
 
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+
+            Directory.CreateDirectory(Server.MapPath("~/App_Data"));
         }
     }
 }
